@@ -32,8 +32,8 @@ class CorsMiddleware
         $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 
         //如果origin不在允许列表内，直接返回403
-//        if (!in_array($origin, $this->allow_origin) && !empty($origin))
-//            return new Response('Forbidden', 403);
+        if (!in_array($origin, $this->allow_origin) && !empty($origin))
+            return new Response('Forbidden', 403);
         //如果是复杂请求，先返回一个200，并allow该origin
         if ($request->isMethod('options'))
             return $this->setCorsHeaders(new Response('OK', 200), $origin);
@@ -59,7 +59,7 @@ class CorsMiddleware
         if (in_array($origin, $this->allow_origin)) {
             $response->header('Access-Control-Allow-Origin', $origin);
         } else {
-            $response->header('Access-Control-Allow-Origin', '*');
+            $response->header('Access-Control-Allow-Origin', '');
         }
         return $response;
     }

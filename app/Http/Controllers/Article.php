@@ -2,22 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 
-class Article extends BaseController
+class Article extends Controller
 {
     public function getItem(Request $request){
         $result = app('db')->table('article')->select()->where('id', '=', $request->input('id'))->get();
-        $results = app('db')->table('tags_article')->select()->where('aid', '=', $request->input('id'))->get();
-        if (!$result->first()) {
-            return false;
-        }
-        $re = (object)[];
-        $re->info = $result->first();
-        $re->tags = $results;
-
-        return json_encode($re);
+        if (!$result->first()) return $this->success('');
+        return $this->success($result->first());
     }
     public function getList(Request $request){
         $tagstring = '';

@@ -14,12 +14,14 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
-$router->get('/article', 'Article@getItem');
+$router->get('/article/getitem', 'Article@getItem');
 $router->get('/article/list', 'Article@getList');
 $router->put('/article/insert', 'Article@insert');
 $router->delete('/article/delete', 'Article@delete');
 $router->get('/tag/list', 'Tag@getList');
 $router->put('/tag/insert', 'Tag@insert');
+$router->get('/captcha/img', 'Captcha@img');
+$router->get('/captcha/verify', 'Captcha@verify');
 //$router->delete('/tag/delete', 'Tag@delete');
 //$router->group(['middleware' => 'auth'], function () use ($router) {
 //    $router->get('/', function ()    {
