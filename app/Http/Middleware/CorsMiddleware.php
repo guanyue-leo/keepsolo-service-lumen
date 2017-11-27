@@ -27,7 +27,7 @@ class CorsMiddleware
 
         $this->allow_origin = [
             'http://localhost:3000',
-            'http://192.168.1.12:8080'
+            'http://192.168.31.204:3000'
         ];
         $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 

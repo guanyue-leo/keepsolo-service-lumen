@@ -36,6 +36,7 @@ class Captcha extends Controller
     }
 
     public function img(Request $request){
+        $rand = 10;
         $width = $request->input('width');
         $height = $request->input('height');
         $img = imagecreatetruecolor($width, $height);
@@ -43,11 +44,12 @@ class Captcha extends Controller
         imagealphablending($img , false);
         imagefill($img , 0 , 0 , $bg);
         $color = imagecolorallocate($img,136,199,244);
-        $x = mt_rand(30,$width);
-        imagefilledellipse($img, $x, (int)($height*0.5), 6, 6, $color);
+        $x = mt_rand(30,$width-$rand);
+        imagefilledellipse($img, $x, (int)($height*0.5), $rand, $rand, $color);
         imagesavealpha($img , true);
         $_SESSION['captcha']['key']  = (int)($x/$width*1000);
         $_SESSION['captcha']['time'] = time();
+        $_SESSION['captcha']['success'] = false;
         header('Content-type:image/png');
         imagepng($img);
         imagedestroy($img);
@@ -67,10 +69,11 @@ class Captcha extends Controller
         {
             return $this->error(-1,'','太久了，请再试一次');
         }
-        if(abs($x - $key) > 100)
+        if(abs($x - $key) > 40 || abs($x - $key) === 0)
         {
             return $this->error(-1,'','请再试一次');
         }
+        $_SESSION['captcha']['success'] = true;
         return $this->success('', '成功');
     }
 

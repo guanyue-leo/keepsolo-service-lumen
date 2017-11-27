@@ -22,6 +22,7 @@ $router->get('/tag/list', 'Tag@getList');
 $router->put('/tag/insert', 'Tag@insert');
 $router->get('/captcha/img', 'Captcha@img');
 $router->get('/captcha/verify', 'Captcha@verify');
+$router->get('/user/login', 'User@login');
 //$router->delete('/tag/delete', 'Tag@delete');
 //$router->group(['middleware' => 'auth'], function () use ($router) {
 //    $router->get('/', function ()    {
