@@ -95,7 +95,7 @@ class Controller extends BaseController
     }
 
     protected function tokenVerify($token){
-        $key = 'www.keepsolo.com';
+        $key = 'www.jihuatong.com';
         $str = $this->encrypt($token, 'D', $key);
         if(!$str) exit(json_encode(array('code' => -1, 'content' => '', 'message' => 'token验证失败')));
         $value = explode('/',$str);
@@ -105,5 +105,10 @@ class Controller extends BaseController
         $result = DB::table('user')->where('id', $id)->first();
         if(!$result) exit(json_encode(array('code' => -1, 'content' => '', 'message' => 'token验证失败')));
         return $result;
+    }
+
+    protected function getUserId($token){
+        $result = $this->tokenVerify($token);
+        return $result->id;
     }
 }

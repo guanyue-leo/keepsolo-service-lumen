@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class Article extends Controller
 {
+    public function __construct(Request $request)
+    {
+
+    }
     public function getItem(Request $request){
         $result = app('db')->table('article')->select()->where('id', '=', $request->input('id'))->get();
         if (!$result->first()) return $this->success('');
