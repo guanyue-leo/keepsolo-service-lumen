@@ -26,7 +26,7 @@ class CorsMiddleware
         ];
 
         $this->allow_origin = [
-            'http://localhost:3001',
+            'http://keepsolo.com',
             'http://192.168.31.204:3001'
         ];
         $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
