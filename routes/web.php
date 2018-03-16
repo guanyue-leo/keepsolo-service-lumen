@@ -27,6 +27,7 @@ $router->get('/todo/getitem', 'ToDo@getItem');
 $router->get('/todo/getlist', 'ToDo@getList');
 $router->post('/todo/insert', 'ToDo@insert');
 $router->put('/todo/update', 'ToDo@update');
+$router->put('/todo/updateorderby', 'ToDo@updateOrderBy');
 //$router->delete('/tag/delete', 'Tag@delete');
 //$router->group(['middleware' => 'auth'], function () use ($router) {
 //    $router->get('/', function ()    {

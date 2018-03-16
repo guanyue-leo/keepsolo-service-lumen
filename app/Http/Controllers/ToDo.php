@@ -24,11 +24,13 @@ class ToDo extends Controller
             $result = app('db')->table('todo')->select()->where([
                 ['status', '=', $request->input('status')],
                 ['user_id', '=', $this->getUserId($request->input('token'))]
-            ])->get();
+            ])
+                ->orderBy('orderkey','desc')
+                ->get();
         }
         else
         {
-            $result = app('db')->table('todo')->select()->where('user_id', '=', $this->getUserId($request->input('token')))->get();
+            $result = app('db')->table('todo')->select()->where('user_id', '=', $this->getUserId($request->input('token')))->orderBy('id','desc')->get();
         }
         if (!$result->first()) return $this->success([]);
         return $this->success($result);
@@ -41,6 +43,41 @@ class ToDo extends Controller
         $result = app('db')->table('todo')->insertGetId(
             array('title' => $request->input('title'), 'status' => $request->input('status'), 'user_id' => $this->getUserId($request->input('token')), 'create_time' => $dateNow, 'alert_time' => $dateAlert)
         );
+        $result2 = app('db')->table('todo')->where([
+            ['id', '=', $result],
+        ])->update(array('orderkey' => $result));
+        return $this->success($result2);
+    }
+    public function updateOrderBy(Request $request){
+//        app('db')->listen(function($query) {
+//            $bindings = $query->bindings;
+//            $sql = $query->sql;
+//            foreach ($bindings as $replace){
+//                $value = is_numeric($replace) ? $replace : "'".$replace."'";
+//                $sql = preg_replace('/\?/', $value, $sql, 1);
+//            }
+//            dd($sql);
+//        });
+        if($request->input('action') === 'plus')
+        {
+            $result = app('db')->table('todo')->where([
+                ['orderkey', '>=', $request->input('startorder')],
+                ['orderkey', '<=', $request->input('endorder')],
+                ['user_id', '=', $this->getUserId($request->input('token'))]
+            ])->increment('orderkey');;
+        }
+        else
+        {
+            $result = app('db')->table('todo')->where([
+                ['orderkey', '>=', $request->input('startorder')],
+                ['orderkey', '<=', $request->input('endorder')],
+                ['user_id', '=', $this->getUserId($request->input('token'))]
+            ])->decrement('orderkey');
+        }
+        $result1 = app('db')->table('todo')->where([
+            ['id', '=', $request->input('dragid')],
+            ['user_id', '=', $this->getUserId($request->input('token'))]
+        ])->update(array('orderkey' => $request->input('neworder')));
         return $this->success($result);
     }
     public function update(Request $request){

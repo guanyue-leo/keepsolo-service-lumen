@@ -10,7 +10,7 @@ class Controller extends BaseController
 {
     public function __construct(Request $request)
     {
-        $this->tokenVerify($request->input('token'));
+//        $this->tokenVerify($request->input('token'));
     }
 
     public function success($content = '', $message = '请求成功')
