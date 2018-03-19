@@ -30,7 +30,7 @@ class User extends Controller
             $time    = time();
             $dateNow = date("Y-m-d H:i:s",$time);
             $ip = $this->getIp();
-            $result = app('db')->table('loginlog')->insertGetId(
+            $logResult = app('db')->table('loginlog')->insertGetId(
                 array('time' => $dateNow, 'ip' => $ip->data->ip, 'position' => $ip->data->country.'-'.$ip->data->area.'-'.$ip->data->region.'-'.$ip->data->city)
             );
         }
