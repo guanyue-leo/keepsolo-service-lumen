@@ -111,4 +111,39 @@ class Controller extends BaseController
         $result = $this->tokenVerify($token);
         return $result->id;
     }
+
+    protected function getIp()
+    {
+        if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
+            $ip = getenv("HTTP_CLIENT_IP");
+        else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown"))
+            $ip = getenv("HTTP_X_FORWARDED_FOR");
+        else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown"))
+            $ip = getenv("REMOTE_ADDR");
+        else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown"))
+            $ip = $_SERVER['REMOTE_ADDR'];
+        else
+            $ip = "unknown";
+
+        $ch  = curl_init();
+        $url = "http://ip.taobao.com/service/getIpInfo.php?ip=".$ip;
+        // set url
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);//返回而不是直接输出
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        //return the transfer as a string
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        // $output contains the output string
+        $output = curl_exec($ch);
+        //echo output
+        $output = json_decode($output);
+        // close curl resource to free up system resources
+        curl_close($ch);
+        return ($output);
+    }
 }
